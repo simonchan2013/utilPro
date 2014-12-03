@@ -24,9 +24,39 @@ public class ParseHtmlByXPath {
 	
 	private static final boolean FEATURE_STATIS = false;
 	
-	private DOMParser parser;
+	//private DOMParser parser;
 	
+	public Document getHtmlDocument(String url) {
+		DOMParser parser = new DOMParser();
+		
+		try {
+			// 设置网页的默认编码,默认为utf-8
+			parser.setProperty(PROPERTY_URL, PROPERTY_ENCODE);
+			
+			/*
+			 * The Xerces HTML DOM implementation does not support namespaces
+			 * and cannot represent XHTML documents with namespace information.
+			 * Therefore, in order to use the default HTML DOM implementation with NekoHTML's
+			 * DOMParser to parse XHTML documents, you must turn off namespace processing.
+			 */
+			parser.setFeature(FEATURE_URL, FEATURE_STATIS);
+			
+			// 可以修改获取页面的编码方式，在最后的那个参数
+			BufferedReader in = new BufferedReader(new InputStreamReader(new URL(url).openStream(),PROPERTY_ENCODE));
+			parser.parse(new InputSource(in));
+			in.close();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return parser.getDocument();
+	}
 	
+	public String getContentByXPath() {
+		String res = null;
+		return res;
+	}
 	
 	public static void main(String[] args) {
 		DOMParser parser = new DOMParser();
